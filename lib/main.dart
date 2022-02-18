@@ -20,20 +20,37 @@ class _MyAppState extends State<MyApp> {
   final _questions = const [
     {
       'questionText': 'What\'s your favorite color?',
-      'answers': ['red', 'black', 'green', 'yellow']
+      'answers': [
+        {'text': 'Black', 'score': 10},
+        {'text': 'Red', 'score': 5},
+        {'text': 'Green', 'score': 3},
+        {'text': 'White', 'score': 1},
+      ],
     },
     {
       'questionText': 'What\'s your favorite animal?',
-      'answers': ['dog', 'cat', 'horse', 'lion']
+      'answers': [
+        {'text': 'Rabbit', 'score': 3},
+        {'text': 'Snake', 'score': 11},
+        {'text': 'Elephant', 'score': 5},
+        {'text': 'Lion', 'score': 1},
+      ],
     },
     {
-      'questionText': 'What\'s your favorite game?',
-      'answers': ['cricket', 'football', 'kabbadi', 'chase']
+      'questionText': 'Who\'s your favorite game?',
+      'answers': [
+        {'text': 'cricket', 'score': 1},
+        {'text': 'kabbadi', 'score': 3},
+        {'text': 'chase', 'score': 7},
+        {'text': 'football', 'score': 9},
+      ],
     },
   ];
   var _questionIndex = 0;
+  var _totalScore = 0;
 
-  void _answerQuestion() {
+  void _answerQuestion(int score) {
+    _totalScore += score;
     setState(() {
       _questionIndex = _questionIndex + 1;
     });
@@ -49,17 +66,18 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        home: Scaffold(
-      appBar: AppBar(
-        title: const Text('My First App'),
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('My First App'),
+        ),
+        body: _questionIndex < _questions.length
+            ? Quiz(
+                answerQuestion: _answerQuestion,
+                questionIndex: _questionIndex,
+                questions: _questions,
+              )
+            : Result(_totalScore),
       ),
-      body: _questionIndex < _questions.length
-          ? Quiz(
-              answerQuestion: _answerQuestion,
-              questionIndex: _questionIndex,
-              questions: _questions,
-            )
-          : Result(),
-    ));
+    );
   }
 }
